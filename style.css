@@ -1,0 +1,121 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin-top: 50px;
+  background-color: #f4f4f4;
+  padding: 20px;
+  padding-bottom: 50px; /* Ajuste o valor conforme necessário */
+}
+
+.top-bar {
+  background-color: #3a3632;
+  color: white;
+  padding: 15px 20px;
+  font-size: 24px; /* Define o tamanho do ícone */
+  font-weight: bold;
+  text-align: left;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  margin-right: 10px; /* Adiciona um espaço entre o ícone e o texto */
+}
+
+.image-banner {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  margin: -10px auto 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 0 0 10px 10px;
+  background-color: white;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.clear-btn {
+  margin-left: 10px; /* Adiciona espaço entre o input e o botão */
+}
+
+label,
+select,
+input {
+  margin: 5px 0;
+}
+
+.btn {
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn:hover {
+  background-color: #45a049;
+}
+
+.btn-copy {
+  background-color: #008cba;
+}
+
+.btn-copy:hover {
+  background-color: #007b9d;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+#customMinutes {
+  width: 100%;
+}
+
+footer.footer {
+  background-color: #3a3632;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5;
+}
+
+footer.footer a {
+  color: #ff6347; /* Nova cor para o link */
+  text-decoration: none; /* Remove o sublinhado */
+}
+
+footer.footer a:hover {
+  color: #ff4500; /* Cor do link quando estiver com o hover */
+}
+
+@media (max-width: 768px) {
+  .footer {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+}
