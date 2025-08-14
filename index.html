@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gerador iCal</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       rel="stylesheet"
@@ -26,8 +28,8 @@
           <option value="WEEKLY">Semanal</option>
           <option value="MONTHLY">Mensal</option>
           <option value="YEARLY">Anual</option>
-          <option value="HOURLY">A cada Hora</option>
-          <option value="MINUTELY_DAILY">A Cada Minuto</option>
+          <!-- <option value="HOURLY">A cada Hora</option> -->
+          <!-- <option value="MINUTELY_DAILY">A Cada Minuto</option> -->
           <option value="INTERVAL_NEW">Intervalo</option>
         </select>
         <br /><br />
@@ -172,6 +174,9 @@
 
       <h2>Resultado:</h2>
       <textarea id="icalResult" rows="6" readonly></textarea><br />
+
+      <h2>Explicação da Expressão:</h2>
+      <textarea id="icalExplanation" rows="6" readonly></textarea><br />
       <center>
         <button type="button" class="btn btn-copy" onclick="copyToClipboard()">
           Copiar para Área de Transferência

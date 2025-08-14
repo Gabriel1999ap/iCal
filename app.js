@@ -20,7 +20,7 @@ document.getElementById("frequency").addEventListener("change", function () {
   let frequency = this.value;
   displayFrequencyDetails(frequency);
   document.getElementById("weeklyOptions").style.display =
-    frequency === "WEEKLY" ? "block" : "none";
+    frequency === "WEEKLY" || frequency === "HOURLY" ? "block" : "none";
   document.getElementById("monthlyOptions").style.display =
     frequency === "MONTHLY" ? "block" : "none";
   document.getElementById("hourOptions").style.display =
@@ -86,7 +86,7 @@ function generateICal() {
   let hours = [];
   let minutes = [];
 
-  if (frequency === "WEEKLY") {
+  if (frequency === "WEEKLY" || frequency === "HOURLY") {
     document
       .querySelectorAll('input[name="days"]:checked')
       .forEach((checkbox) => days.push(checkbox.value));
@@ -119,10 +119,10 @@ function generateICal() {
     }
   }
 
-    // Se for "Intervalo", pega a unidade selecionada
-    if (frequency === "INTERVAL_NEW") {
-      frequency = document.getElementById("intervalUnit").value;
-    }
+  // Se for "Intervalo", pega a unidade selecionada
+  if (frequency === "INTERVAL_NEW") {
+    frequency = document.getElementById("intervalUnit").value;
+  }
 
   let icalExpression = `FREQ=${frequency}`;
 
@@ -131,7 +131,7 @@ function generateICal() {
     icalExpression += `;INTERVAL=${interval}`;
   }
 
-  if (frequency === "WEEKLY" && days.length) {
+  if ((frequency === "WEEKLY" || frequency === "HOURLY") && days.length) {
     icalExpression += `;BYDAY=${days.join(",")}`;
   }
 
@@ -154,6 +154,89 @@ function generateICal() {
   icalExpression += ";";
 
   document.getElementById("icalResult").value = icalExpression;
+  document.getElementById("icalExplanation").innerText =
+    explainICal(icalExpression);
+}
+
+// Função para explicar a expressão
+function explainICal(icalExpression) {
+  const parts = Object.fromEntries(
+    icalExpression
+      .split(";")
+      .filter(Boolean)
+      .map((p) => p.split("="))
+  );
+
+  let explanation = [];
+
+  if (parts.FREQ) {
+    switch (parts.FREQ) {
+      case "DAILY":
+        explanation.push(
+          `Todos os dias${
+            parts.INTERVAL ? ` a cada ${parts.INTERVAL} dia(s)` : ""
+          }`
+        );
+        break;
+      case "WEEKLY":
+        explanation.push(
+          `Semanalmente${
+            parts.INTERVAL ? ` a cada ${parts.INTERVAL} semana(s)` : ""
+          }`
+        );
+        break;
+      case "HOURLY":
+        explanation.push(`A cada ${parts.INTERVAL || 1} hora(s)`);
+        break;
+      case "MINUTELY":
+        explanation.push(`A cada ${parts.INTERVAL || 1} minuto(s)`);
+        break;
+      case "MONTHLY":
+        explanation.push(
+          `Todo mês${parts.INTERVAL ? ` a cada ${parts.INTERVAL} mês(es)` : ""}`
+        );
+        break;
+      case "YEARLY":
+        explanation.push(
+          `Todo ano${parts.INTERVAL ? ` a cada ${parts.INTERVAL} ano(s)` : ""}`
+        );
+        break;
+    }
+  }
+
+  if (parts.BYDAY) {
+    const daysMap = {
+      MO: "segunda-feira",
+      TU: "terça-feira",
+      WE: "quarta-feira",
+      TH: "quinta-feira",
+      FR: "sexta-feira",
+      SA: "sábado",
+      SU: "domingo",
+    };
+    const dias = parts.BYDAY.split(",")
+      .map((d) => daysMap[d])
+      .join(", ");
+    explanation.push(`nos dias: ${dias}`);
+  }
+
+  if (parts.BYMONTHDAY) {
+    explanation.push(`nos dias do mês: ${parts.BYMONTHDAY}`);
+  }
+
+  if (parts.BYHOUR || parts.BYMINUTE) {
+    let hours = parts.BYHOUR ? parts.BYHOUR.split(",") : ["*"];
+    let minutes = parts.BYMINUTE ? parts.BYMINUTE.split(",") : ["00"];
+    let times = [];
+    hours.forEach((h) => {
+      minutes.forEach((m) => {
+        times.push(`${h.padStart(2, "0")}:${m.padStart(2, "0")}`);
+      });
+    });
+    explanation.push(`nos horários: ${times.join(", ")}`);
+  }
+
+  return explanation.join(" ");
 }
 
 function copyToClipboard() {
